@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "553464176770",
+    "firebase_url": "https://cm-zoo-explorer.firebaseio.com",
+    "project_id": "cm-zoo-explorer",
+    "storage_bucket": "cm-zoo-explorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553464176770:android:1e3873e12c6e1a8286949b",
+        "android_client_info": {
+          "package_name": "com.cm.zooexplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553464176770-7uarpve5bhsuon1qiag0uik9hmfvjm0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQCM3HdyIAcL62SG6khY6JJVqZ-XFcgTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553464176770-7uarpve5bhsuon1qiag0uik9hmfvjm0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

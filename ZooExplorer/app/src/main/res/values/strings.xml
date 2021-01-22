@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ZooExplorer</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="getStarted">GET STARTED</string>
+
+    <string name="habitat">Habitat </string>
+    <string name="map">Map</string>
+    <string name="habitats">Habitats</string>
+    <string name="profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
