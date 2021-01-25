@@ -1,10 +1,13 @@
 package com.cm.zooexplorer;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,32 +15,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-/*import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-*/
+import com.cm.zooexplorer.viewmodel.HabitatViewModel;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import com.cm.zooexplorer.adapters.HabitatsAdapter;
 import com.cm.zooexplorer.models.Habitat;
-import com.cm.zooexplorer.models.Location;
-
-import com.cm.zooexplorer.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HabitatsFragment extends Fragment {
+    public static int HABITAT_REQUEST_CODE = 1;
+    //private static HabitatsFragment fragment;
     private final List<Habitat> habitats = new LinkedList<>();
     private RecyclerView habitatsRecyclerView;
     private HabitatsAdapter adapter;
-    //private CollectionReference firestoreRef = FirebaseFirestore.getInstance().collection("habitats");
+    private HabitatViewModel habitatViewModel;
+    private ProgressBar progressBar;
 
     public HabitatsFragment() {
         // Required empty public constructor
@@ -47,44 +48,54 @@ public class HabitatsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //createHabitats();
-
-        habitats.add(new Habitat("1", "Panthera Leo", "", "", 0,
-        0.0, 0.0, 0, new Location(0.0,0.0),
-        0, 0.0, 0.0, 0.0,
-        "", 0, "Panthera Leo", "lion", "lion"));
-        habitats.add(new Habitat("2", "Giraffe", "", "", 0,
-                0.0, 0.0, 0, new Location(0.0,0.0),
-                0, 0.0, 0.0, 0.0,
-                "", 0, "Giraffe", "giraffe", "giraffe"));
+        habitatViewModel = new ViewModelProvider(this).get(HabitatViewModel.class);
+        habitatViewModel.getHabitatsLiveData().observe(this, new Observer<List<Habitat>>() {
+            @Override
+            public void onChanged(List<Habitat> habitats) {
+                adapter.setHabitats(habitats);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_habitats, container, false);
 
         habitatsRecyclerView = rootView.findViewById(R.id.habitats_recycler_view);
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
+
         adapter = new HabitatsAdapter(habitats);
         habitatsRecyclerView.setAdapter(adapter);
         habitatsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), QrCodeActivity.class);
+                startActivityForResult(intent, HABITAT_REQUEST_CODE);
+            }
+        });
+
         return rootView;
     }
 
-    /*private void createHabitats(){
-        firestoreRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                 if(task.isSuccessful())
-                    for(QueryDocumentSnapshot doc : task.getResult())
-                        Log.i("habitats", doc.getId() + "=>" + doc.getData());
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == HABITAT_REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                Log.i("Resultado: ", "" + data.getIntExtra(QrCodeActivity.HABITAT_ID, 0));
+                // add the id to the list of unlocked habitats
             }
-        });
-    }*/
+        }
+    }
 
     public static HabitatsFragment newInstance(){
-        return new HabitatsFragment();
+        return new HabitatsFragment(); //fragment==null ? new HabitatsFragment() : fragment;
     }
 }

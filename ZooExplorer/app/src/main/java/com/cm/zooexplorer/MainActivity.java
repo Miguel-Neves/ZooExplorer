@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.cm.zooexplorer.R;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationBar;
