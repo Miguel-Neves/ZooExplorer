@@ -1,15 +1,19 @@
 package com.cm.zooexplorer;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cm.zooexplorer.R;
+import com.cm.zooexplorer.models.Habitat;
+import com.cm.zooexplorer.viewmodel.HabitatViewModel;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +39,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +56,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static MapFragment mapFragment;
     private GoogleMap gmap;
+    private List<Habitat> habitatList;
 
     public MapFragment() {
         // Required empty public constructor
@@ -52,6 +65,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        habitatList = new LinkedList<>();
+        HabitatViewModel habitatViewModel = new ViewModelProvider(this).get(HabitatViewModel.class);
+        habitatViewModel.getHabitatsLiveData().observe(this, new Observer<List<Habitat>>() {
+            @Override
+            public void onChanged(List<Habitat> habitats) {
+                habitatList = habitats;
+                if (gmap != null) {
+                    gmap.clear();
+                    getHabitatMarkers();
+                }
+            }
+        });
     }
 
     @Override
@@ -88,17 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         enableLocation();
         //googleMap.setMyLocationEnabled(true);
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(40.633450, -8.657985))
-                .title("Habitat 1\tⓘ").snippet("Lions")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.animal_marker_icon)))
-                .setTag(1);
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(40.632134740413925, -8.658584348230372))
-                .title("Habitat 2\tⓘ").snippet("Giraffes")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.animal_marker_icon))
-                .alpha(0.7f))
-                .setTag(2);
+        getHabitatMarkers();
         // Set habitat page shortcut on marker info window tap
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -106,6 +121,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.i("DEBUG", "loading habitat " + marker.getTag() + " info page");
             }
         });
+    }
+
+    private void getHabitatMarkers() {
+        SharedPreferences prefs = getContext().getSharedPreferences(HabitatsFragment.PREFERENCES_NAME, MODE_PRIVATE);
+        Set<String> unlockedHabitats = new ArraySet<>(prefs.getStringSet(HabitatsFragment.UNLOCKED_HABITATS, null));
+        for (Habitat habitat : habitatList) {
+            gmap.addMarker(new MarkerOptions()
+                    .position(new LatLng(habitat.getLocation().getLatitude(), habitat.getLocation().getLongitude()))
+                    .title("Habitat " + habitat.getId() + "\tⓘ")
+                    .snippet(habitat.getSpecies())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.animal_marker_icon))
+                    .alpha(unlockedHabitats.contains(habitat.getId()) ? 1f : 0.6f))
+                    .setTag(habitat.getId());
+        }
     }
 
     private void enableLocation() {
