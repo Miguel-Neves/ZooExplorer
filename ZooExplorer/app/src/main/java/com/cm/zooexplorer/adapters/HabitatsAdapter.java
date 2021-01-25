@@ -16,7 +16,7 @@ import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 
 public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.HabitatViewHolder> {
-    private final List<Habitat> habitats;
+    private List<Habitat> habitats;
     private Context context;
 
     public HabitatsAdapter(List<Habitat> habitats) {
@@ -41,6 +41,11 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
         holder.habitatName.setText(habitatName);
         // TODO: change the image background
         holder.backgroundImg.setImageResource(getImage(currentHabitat.getImageName()));
+    }
+
+    public void setHabitats(List<Habitat> habitats){
+        this.habitats = habitats;
+        notifyDataSetChanged();
     }
 
     @Override

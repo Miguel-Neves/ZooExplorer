@@ -1,15 +1,18 @@
 package com.cm.zooexplorer.models;
 
+import com.google.firebase.firestore.GeoPoint;
+
 public class Habitat {
     private String id, binName, consStatus, diet, natHabitat, species, imageUrl, imageName;
     private int f_lifeExpectancy, gestPeriod, m_lifeExpectancy, offsprings;
     private double f_size, f_weight, m_size, m_weight, matAge;
-    private Location location;
+    private GeoPoint location;
     //CollectionReference photoCollection;
 
+    public Habitat(){}
 
     public Habitat(String id, String binName, String consStatus, String diet, int f_lifeExpectancy,
-                   double f_size, double f_weight, int gestPeriod, Location location,
+                   double f_size, double f_weight, int gestPeriod, GeoPoint location,
                    int m_lifeExpectancy, double m_size, double m_weight, double matAge,
                    String natHabitat, int offsprings, String species, String imageUrl, String imageName) {
         this.id = id;
@@ -64,7 +67,7 @@ public class Habitat {
         return gestPeriod;
     }
 
-    public Location getLocation() {
+    public GeoPoint getLocation() {
         return location;
     }
 
@@ -136,7 +139,7 @@ public class Habitat {
         this.gestPeriod = gestPeriod;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(GeoPoint location) {
         this.location = location;
     }
 
