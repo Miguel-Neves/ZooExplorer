@@ -1,6 +1,10 @@
 package com.cm.zooexplorer.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Set;
 
+import com.cm.zooexplorer.HabitatsFragment;
 import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.HabitatViewHolder> {
+    //private static final String PREFERENCES_NAME = "com.cm.zooexplorer.UNLOCKED_HABITATS";
     private List<Habitat> habitats;
     private Context context;
 
@@ -35,12 +45,26 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
     @Override
     public void onBindViewHolder(@NonNull HabitatViewHolder holder, int position) {
         Habitat currentHabitat = habitats.get(position);
-        holder.habitatAnimal.setText(currentHabitat.getSpecies());
 
         String habitatName = "Habitat " + currentHabitat.getId();
         holder.habitatName.setText(habitatName);
-        // TODO: change the image background
+
         holder.backgroundImg.setImageResource(getImage(currentHabitat.getImageName()));
+
+        SharedPreferences prefs = context.getSharedPreferences(HabitatsFragment.PREFERENCES_NAME, MODE_PRIVATE);
+        Set<String> unlockedHabitats = prefs.getStringSet(HabitatsFragment.UNLOCKED_HABITATS, null);
+
+        if(unlockedHabitats!=null && unlockedHabitats.contains(currentHabitat.getId())){
+            holder.habitatAnimal.setText(currentHabitat.getSpecies());
+
+        }else{
+            holder.habitatAnimal.setText(R.string.locked_text);
+
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            holder.backgroundImg.setColorFilter(filter);
+        }
     }
 
     public void setHabitats(List<Habitat> habitats){
@@ -58,8 +82,9 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
     }
 
     class HabitatViewHolder extends RecyclerView.ViewHolder {
-        public final TextView habitatName, habitatAnimal;
-        public final ImageView backgroundImg;
+        final TextView habitatName, habitatAnimal;
+        final ImageView backgroundImg;
+        final CardView cardView;
         final HabitatsAdapter adapter;
 
         public HabitatViewHolder(View itemView, HabitatsAdapter adapter) {
@@ -67,6 +92,7 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
             habitatName = itemView.findViewById(R.id.habitat_name);
             habitatAnimal = itemView.findViewById(R.id.habitat_animal);
             backgroundImg = itemView.findViewById(R.id.background_img);
+            cardView = itemView.findViewById(R.id.card_view);
             this.adapter = adapter;
         }
     }

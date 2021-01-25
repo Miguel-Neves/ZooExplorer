@@ -22,7 +22,7 @@ import com.cm.zooexplorer.adapters.IntroViewPagerAdapter;
 import com.cm.zooexplorer.models.ScreenItem;
 
 public class IntroSlider extends AppCompatActivity {
-    public static final String PREFERENCES_NAME = "pt.ua.cm.zooexplorer.preferences";
+    public static final String PREFERENCES_NAME = "com.cm.zooexplorer.preferences";
     public static final String IS_FIRST_TIME = "isFirstTime";
     private ViewPager viewPager;
     private IntroViewPagerAdapter introViewPagerAdapter;
