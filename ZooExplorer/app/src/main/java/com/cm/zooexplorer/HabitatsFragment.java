@@ -108,6 +108,7 @@ public class HabitatsFragment extends Fragment {
                 editor.putStringSet(UNLOCKED_HABITATS, unlockedHabitats);
                 editor.apply();
                 adapter.notifyItemChanged(Integer.parseInt(data.getStringExtra(QrCodeActivity.HABITAT_ID))-1);
+                habitatsRecyclerView.scrollToPosition(Integer.parseInt(data.getStringExtra(QrCodeActivity.HABITAT_ID))-1);
             }
         }
     }

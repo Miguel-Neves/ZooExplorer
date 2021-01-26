@@ -23,13 +23,15 @@ public class HabitatViewModel extends AndroidViewModel {
         repository = new Repository(application);
         habitatsLiveData = repository.getHabitats();
     }
-/*
-    public void getHabitats(){
-        repository.loadHabitats();
-    }
-
- */
     public MutableLiveData<List<Habitat>> getHabitatsLiveData() {
         return habitatsLiveData;
+    }
+
+    public MutableLiveData<Habitat> getHabitat(String id){
+        return repository.getHabitat(id);
+    }
+
+    public MutableLiveData<List<String>> getHabitatPhotoPaths(String id){
+        return repository.getHabitatPhotoPaths(id);
     }
 }

@@ -11,4 +11,6 @@
     <color name="tab_indicator_selected">#4C4C4C</color>
     <color name="intro_title_color">#000000</color>
     <color name="intro_description_color">#656565</color>
+    <color name="grey">#6F6F6F</color>
+    <color name="dark_grey">#1E1E1E</color>
 </resources>

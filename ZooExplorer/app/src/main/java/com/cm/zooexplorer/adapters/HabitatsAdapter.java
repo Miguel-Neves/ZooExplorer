@@ -1,6 +1,7 @@
 package com.cm.zooexplorer.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Set;
 
+import com.cm.zooexplorer.HabitatProfileActivity;
 import com.cm.zooexplorer.HabitatsFragment;
+import com.cm.zooexplorer.QrCodeActivity;
 import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 
@@ -28,6 +31,7 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
     //private static final String PREFERENCES_NAME = "com.cm.zooexplorer.UNLOCKED_HABITATS";
     private List<Habitat> habitats;
     private Context context;
+    public static String HABITAT_IDENTIFIER = "com.cm.zooexplorer.HABITAT_IDENTIFIER";
 
     public HabitatsAdapter(List<Habitat> habitats) {
         this.habitats = habitats;
@@ -44,7 +48,7 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
 
     @Override
     public void onBindViewHolder(@NonNull HabitatViewHolder holder, int position) {
-        Habitat currentHabitat = habitats.get(position);
+        final Habitat currentHabitat = habitats.get(position);
 
         String habitatName = "Habitat " + currentHabitat.getId();
         holder.habitatName.setText(habitatName);
@@ -56,7 +60,14 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
 
         if(unlockedHabitats!=null && unlockedHabitats.contains(currentHabitat.getId())){
             holder.habitatAnimal.setText(currentHabitat.getSpecies());
-
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, HabitatProfileActivity.class);
+                    intent.putExtra(HABITAT_IDENTIFIER, currentHabitat.getId());
+                    context.startActivity(intent);
+                }
+            });
         }else{
             holder.habitatAnimal.setText(R.string.locked_text);
 
