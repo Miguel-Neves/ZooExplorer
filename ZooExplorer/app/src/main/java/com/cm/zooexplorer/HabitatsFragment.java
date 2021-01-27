@@ -12,6 +12,7 @@ import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,7 +89,7 @@ public class HabitatsFragment extends Fragment {
 
         adapter = new HabitatsAdapter(habitatList);
         habitatsRecyclerView.setAdapter(adapter);
-        habitatsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        habitatsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.habitatsNumCol)));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

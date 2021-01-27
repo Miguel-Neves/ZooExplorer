@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ZooExplorer</string>
+
+    <string name="next">SEGUINTE</string>
+    <string name="skip">SALTAR</string>
+    <string name="getStarted">COMEÇAR</string>
+
+    <string name="habitat">Habitat </string>
+    <string name="map">Mapa</string>
+    <string name="habitats">Habitats</string>
+    <string name="profile">Perfil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="locked_text">[visite para desbloquear]</string>
+
+    <string name="characteristics">Características</string>
+    <string name="species">Espécie</string>
+    <string name="binName">Nome Binomial</string>
+    <string name="consStatus">Estado de Conservação</string>
+    <string name="diet">Dieta</string>
+    <string name="natHabitat">Habitat Natural</string>
+    <string name="lifecycle">Ciclo de Vida</string>
+    <string name="numOffspring">Número de Crias</string>
+    <string name="ageMaturity">Idade de Maturação</string>
+    <string name="gestPeriod">Período de gestação</string>
+    <string name="averages">Médias</string>
+    <string name="size">Tamanho</string>
+    <string name="lifeExp">Esperança de Vida</string>
+    <string name="weight">Peso</string>
+    <string name="sizeMeters">%1$s m</string>
+    <string name="weightKilogram">%1$s kg</string>
+    <plurals name="timeMonths">
+        <item quantity="one">%1$s mês</item>
+        <item quantity="other">%1$s meses</item>
+    </plurals>
+    <plurals name="timeYears">
+        <item quantity="one">%1$s ano</item>
+        <item quantity="other">%1$s anos</item>
+    </plurals>
+</resources>

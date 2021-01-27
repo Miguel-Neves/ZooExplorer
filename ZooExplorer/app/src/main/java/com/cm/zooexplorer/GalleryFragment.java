@@ -92,7 +92,7 @@ public class GalleryFragment extends Fragment {
         galleryRecyclerView = rootView.findViewById(R.id.gallery_recycler_view);
         adapter = new GalleryAdapter(imgRefs);
         galleryRecyclerView.setAdapter(adapter);
-        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.galleryNumCol)));
 
         checkStoragePermissions();
 
