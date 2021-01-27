@@ -17,7 +17,6 @@
             android:layout_height="200dp"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="Habitat 1"
             app:expandedTitleTextAppearance="@style/collapsedToolbarTitleAppearance"
             app:collapsedTitleTextAppearance="@style/collapsedToolbarTitleAppearance"
             app:expandedTitleGravity="center|bottom"
@@ -27,7 +26,6 @@
                 android:id="@+id/collapsing_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/lion"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
 

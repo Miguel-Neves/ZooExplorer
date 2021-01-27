@@ -1,6 +1,8 @@
 package com.cm.zooexplorer;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +41,12 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class HabitatsFragment extends Fragment {
+    private static final String TAG = "ZooExplorer-HABITATS";
     public static final String UNLOCKED_HABITATS = "UNLOCKED_HABITATS";
     public static final String PREFERENCES_NAME = "com.cm.zooexplorer.UNLOCKED_HABITATS";
     public static int HABITAT_REQUEST_CODE = 1;
     //private static HabitatsFragment fragment;
-    private final List<Habitat> habitats = new LinkedList<>();
+    private List<Habitat> habitatList;
     private RecyclerView habitatsRecyclerView;
     private HabitatsAdapter adapter;
     private HabitatViewModel habitatViewModel;
@@ -56,12 +61,15 @@ public class HabitatsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        habitatList = new LinkedList<>();
         habitatViewModel = new ViewModelProvider(this).get(HabitatViewModel.class);
         habitatViewModel.getHabitatsLiveData().observe(this, new Observer<List<Habitat>>() {
             @Override
             public void onChanged(List<Habitat> habitats) {
+                habitatList = habitats;
                 adapter.setHabitats(habitats);
-                progressBar.setVisibility(View.INVISIBLE);
+                if (!habitatList.isEmpty())
+                    progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -78,7 +86,7 @@ public class HabitatsFragment extends Fragment {
         progressBar = rootView.findViewById(R.id.progress_bar);
         FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
 
-        adapter = new HabitatsAdapter(habitats);
+        adapter = new HabitatsAdapter(habitatList);
         habitatsRecyclerView.setAdapter(adapter);
         habitatsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -86,7 +94,12 @@ public class HabitatsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), QrCodeActivity.class);
-                startActivityForResult(intent, HABITAT_REQUEST_CODE);
+                try {
+                    startActivityForResult(intent, HABITAT_REQUEST_CODE);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getContext(), "Error: Could not initiate the QR code capture.", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Could not initiate the QR code capture. Error: ", e);
+                }
             }
         });
 
@@ -94,23 +107,60 @@ public class HabitatsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!habitatList.isEmpty())
+            progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == HABITAT_REQUEST_CODE){
-            if(resultCode == Activity.RESULT_OK){
+        if(requestCode == HABITAT_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            try {
+                // Get data read from the QR code
+                String habitatId = data.getStringExtra(QrCodeActivity.HABITAT_ID);
+
+                // Get set of unlocked habitats saved locally
                 SharedPreferences prefs = getContext().getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
                 unlockedHabitats = new ArraySet<>(prefs.getStringSet(UNLOCKED_HABITATS, unlockedHabitats));
-                SharedPreferences.Editor editor = prefs.edit();
 
-                unlockedHabitats.add(data.getStringExtra(QrCodeActivity.HABITAT_ID));
-
-                editor.putStringSet(UNLOCKED_HABITATS, unlockedHabitats);
-                editor.apply();
-                adapter.notifyItemChanged(Integer.parseInt(data.getStringExtra(QrCodeActivity.HABITAT_ID))-1);
-                habitatsRecyclerView.scrollToPosition(Integer.parseInt(data.getStringExtra(QrCodeActivity.HABITAT_ID))-1);
+                // Verify if the data represents a valid habitat ID and proceed accordingly
+                if (unlockedHabitats.contains(habitatId))
+                    Toast.makeText(getContext(), "Habitat already unlocked!", Toast.LENGTH_LONG).show();
+                //else if (habitatList.stream().anyMatch(e -> e.getId().equals(habitatId)))
+                else if (!isValidHabitat(habitatId))
+                    Toast.makeText(getContext(), "Not a valid habitat!", Toast.LENGTH_LONG).show();
+                else {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    unlockedHabitats.add(habitatId);
+                    editor.putStringSet(UNLOCKED_HABITATS, unlockedHabitats);
+                    editor.apply();
+                    adapter.notifyItemChanged(Integer.parseInt(habitatId) - 1);
+                    if (habitatList.size() > unlockedHabitats.size())
+                        Toast.makeText(getContext(), "Habitat " + habitatId + " unlocked!", Toast.LENGTH_LONG).show();
+                    else {
+                        Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                        if (vibrator != null)
+                            vibrator.vibrate(500);
+                        Toast.makeText(getContext(), "All habitats unlocked!\nCONGRATULATIONS!", Toast.LENGTH_LONG).show();
+                    }
+                }
+                habitatsRecyclerView.scrollToPosition(Integer.parseInt(habitatId) - 1);
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), "Error reading the QR code!", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error reading QR code: ", e);
             }
         }
+    }
+
+    private boolean isValidHabitat(String id) {
+        for (Habitat habitat : habitatList) {
+            if (habitat.getId().equals(id))
+                return true;
+        }
+        return false;
     }
 
     public static HabitatsFragment newInstance(){

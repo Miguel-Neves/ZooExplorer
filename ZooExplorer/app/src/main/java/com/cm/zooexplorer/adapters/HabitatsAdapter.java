@@ -54,6 +54,8 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
         holder.habitatName.setText(habitatName);
 
         holder.backgroundImg.setImageResource(getImage(currentHabitat.getImageName()));
+        ColorMatrix matrix = new ColorMatrix();
+        ColorMatrixColorFilter filter;
 
         SharedPreferences prefs = context.getSharedPreferences(HabitatsFragment.PREFERENCES_NAME, MODE_PRIVATE);
         Set<String> unlockedHabitats = prefs.getStringSet(HabitatsFragment.UNLOCKED_HABITATS, null);
@@ -68,12 +70,15 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
                     context.startActivity(intent);
                 }
             });
+
+            matrix.setSaturation(1);
+            filter = new ColorMatrixColorFilter(matrix);
+            holder.backgroundImg.setColorFilter(filter);
         }else{
             holder.habitatAnimal.setText(R.string.locked_text);
 
-            ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            filter = new ColorMatrixColorFilter(matrix);
             holder.backgroundImg.setColorFilter(filter);
         }
     }
