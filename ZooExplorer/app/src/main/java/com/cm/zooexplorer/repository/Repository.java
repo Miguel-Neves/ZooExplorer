@@ -2,11 +2,16 @@ package com.cm.zooexplorer.repository;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cm.zooexplorer.models.Habitat;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -17,15 +22,19 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class Repository {
     private Application application;
     private MutableLiveData<List<Habitat>> habitatsMutableLiveData;
     private MutableLiveData<Habitat> habitat;
-    private MutableLiveData<List<String>> photoPaths;
+    private MutableLiveData<List<StorageReference>> photoPaths;
     private CollectionReference firestoreRef = FirebaseFirestore.getInstance().collection("habitats");
     private FirebaseStorage storageRef = FirebaseStorage.getInstance("gs://cm-zoo-explorer.appspot.com");
 
@@ -67,19 +76,39 @@ public class Repository {
         return habitat;
     }
 
-    public MutableLiveData<List<String>> getHabitatPhotoPaths(String id){
+    public MutableLiveData<List<StorageReference>> getHabitatPhotoPaths(String id){
         storageRef.getReference().child("photos").child(id).listAll().addOnSuccessListener(application.getMainExecutor(), new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
-                List<String> paths = new LinkedList<>();
+                /*List<String> paths = new LinkedList<>();
 
                 for(StorageReference sr : listResult.getItems()){
                  paths.add(sr.getPath());
                 }
-                photoPaths.postValue(paths);
+                photoPaths.postValue(paths);*/
+                photoPaths.postValue(listResult.getItems());
             }
         });
         return photoPaths;
+    }
+
+    public void uploadToFirebase(Uri uri, final String habitat_id) {
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
+
+        StorageReference ref = storageRef.getReference().child("photos").child(habitat_id).child(timeStamp + ".jpg");
+        Log.i("Referencia", ref.getPath());
+        ref.putFile(uri).addOnSuccessListener(application.getMainExecutor(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i("ISTO", "-----> funcionou");
+                getHabitatPhotoPaths(habitat_id);
+            }
+        }).addOnFailureListener(application.getMainExecutor(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("ISTO", "----->  NAO funcionou");
+            }
+        });
     }
 }
 

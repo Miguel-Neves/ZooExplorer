@@ -54,7 +54,7 @@ public class HabitatProfileActivity extends AppCompatActivity {
         });
 
         final ViewPager viewPager = findViewById(R.id.habitat_pager);
-        final TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        final TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), habitatId);
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

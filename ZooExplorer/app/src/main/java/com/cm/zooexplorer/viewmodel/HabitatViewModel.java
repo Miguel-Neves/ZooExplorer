@@ -2,6 +2,7 @@ package com.cm.zooexplorer.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.cm.zooexplorer.models.Habitat;
 import com.cm.zooexplorer.repository.Repository;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -31,7 +33,11 @@ public class HabitatViewModel extends AndroidViewModel {
         return repository.getHabitat(id);
     }
 
-    public MutableLiveData<List<String>> getHabitatPhotoPaths(String id){
+    public MutableLiveData<List<StorageReference>> getHabitatPhotoPaths(String id){
         return repository.getHabitatPhotoPaths(id);
+    }
+
+    public void uploadToFirebase(Uri uri, String habitat_id) {
+        repository.uploadToFirebase(uri, habitat_id);
     }
 }

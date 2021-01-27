@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +15,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,12 +28,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.cm.zooexplorer.adapters.GalleryAdapter;
+import com.cm.zooexplorer.models.Habitat;
+import com.cm.zooexplorer.viewmodel.HabitatViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
@@ -46,9 +58,29 @@ public class GalleryFragment extends Fragment {
     private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 3;
     private static GalleryFragment galleryFragment;
     private Uri currentPictureUri;
+    private RecyclerView galleryRecyclerView;
+    private GalleryAdapter adapter;
+    private List<StorageReference> imgRefs = new LinkedList<>();
+    private HabitatViewModel habitatViewModel;
+    private String habitat_id;
 
-    public GalleryFragment() {
-        // Required empty public constructor
+    public GalleryFragment(String habitat_id) {
+        this.habitat_id = habitat_id;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        habitatViewModel = new ViewModelProvider(this).get(HabitatViewModel.class);
+        habitatViewModel.getHabitatPhotoPaths(habitat_id).observe(this, new Observer<List<StorageReference>>() {
+            @Override
+            public void onChanged(List<StorageReference> storageReferences) {
+                adapter.setImgRefs(storageReferences);
+                //progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
     @Override
@@ -56,6 +88,11 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        galleryRecyclerView = rootView.findViewById(R.id.gallery_recycler_view);
+        adapter = new GalleryAdapter(imgRefs);
+        galleryRecyclerView.setAdapter(adapter);
+        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         checkStoragePermissions();
 
@@ -85,7 +122,7 @@ public class GalleryFragment extends Fragment {
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
         String imageFileName = "Habitat_" + timeStamp;    // TODO add habitat id
-        File storageDir = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "ZooExplorer");
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "ZooExplorer");
         if (!storageDir.exists() && !storageDir.mkdir())
             Log.e(TAG, "Could not create image storage directory \"" + storageDir.getAbsolutePath() + "\".");
         return File.createTempFile(imageFileName, ".jpg", storageDir);
@@ -95,10 +132,14 @@ public class GalleryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(currentPictureUri);
             getActivity().sendBroadcast(mediaScanIntent);
             Log.i(TAG, "Image saved in the device's gallery.");
+            Toast.makeText(getContext(), "Image saved in the device's gallery.", Toast.LENGTH_LONG).show();
+
+            habitatViewModel.uploadToFirebase(currentPictureUri, habitat_id);
         }
     }
 
@@ -120,7 +161,7 @@ public class GalleryFragment extends Fragment {
     }
 
 
-    public static GalleryFragment newInstance() {
-        return galleryFragment != null ? galleryFragment : new GalleryFragment();
+    public static GalleryFragment newInstance(String habitat_id) {
+        return galleryFragment != null ? galleryFragment : new GalleryFragment(habitat_id);
     }
 }

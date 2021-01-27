@@ -48,34 +48,21 @@
             android:layout_gravity="bottom"
             app:tabGravity="fill"
             app:tabIconTint="@color/tab_selector">
-
-            <!--<com.google.android.material.tabs.TabItem
-                android:id="@+id/info_tab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/info_icon"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/gallery_tab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/gallery_icon"/>-->
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <!--<androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:layout_gravity="fill_vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
+-->
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/habitat_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:layout_behavior=".FixScrollingFooterBehavior"/>
 
-    </androidx.core.widget.NestedScrollView>
-
-
-
+    <!--</androidx.core.widget.NestedScrollView>-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
