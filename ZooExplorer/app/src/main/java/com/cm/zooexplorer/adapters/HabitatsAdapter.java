@@ -18,15 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Set;
 
-import com.cm.zooexplorer.HabitatProfileActivity;
-import com.cm.zooexplorer.HabitatsFragment;
+import com.cm.zooexplorer.ui.HabitatProfileActivity;
+import com.cm.zooexplorer.ui.HabitatsFragment;
 import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.HabitatViewHolder> {
-    //private static final String PREFERENCES_NAME = "com.cm.zooexplorer.UNLOCKED_HABITATS";
     private List<Habitat> habitats;
     private Context context;
     public static String HABITAT_IDENTIFIER = "com.cm.zooexplorer.HABITAT_IDENTIFIER";

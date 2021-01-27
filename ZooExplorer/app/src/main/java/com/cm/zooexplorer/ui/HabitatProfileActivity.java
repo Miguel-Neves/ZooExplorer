@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.adapters.HabitatsAdapter;
 import com.cm.zooexplorer.adapters.TabPageAdapter;
 import com.cm.zooexplorer.models.Habitat;

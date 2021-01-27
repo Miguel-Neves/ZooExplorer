@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.cm.zooexplorer.InfoFragment;
-import com.cm.zooexplorer.GalleryFragment;
+import com.cm.zooexplorer.ui.InfoFragment;
+import com.cm.zooexplorer.ui.GalleryFragment;
 
 public class TabPageAdapter extends FragmentStatePagerAdapter {
     private int numOfTabs;

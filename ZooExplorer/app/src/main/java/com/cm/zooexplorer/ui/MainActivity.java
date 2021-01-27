@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.MenuItem;
 
+import com.cm.zooexplorer.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 

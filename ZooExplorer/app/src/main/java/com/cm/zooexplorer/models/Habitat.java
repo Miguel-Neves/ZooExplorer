@@ -7,7 +7,6 @@ public class Habitat {
     private int f_lifeExpectancy, gestPeriod, m_lifeExpectancy, offsprings;
     private double f_size, f_weight, m_size, m_weight, matAge;
     private GeoPoint location;
-    //CollectionReference photoCollection;
 
     public Habitat(){}
 

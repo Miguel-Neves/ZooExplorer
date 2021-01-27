@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;

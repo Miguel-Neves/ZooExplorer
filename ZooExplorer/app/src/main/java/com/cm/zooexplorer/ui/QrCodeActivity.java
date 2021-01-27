@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.cm.zooexplorer.R;
 import com.google.zxing.Result;
 
 public class QrCodeActivity extends AppCompatActivity {

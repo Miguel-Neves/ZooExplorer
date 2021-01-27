@@ -1,8 +1,7 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 import com.cm.zooexplorer.viewmodel.HabitatViewModel;
 

@@ -1,4 +1,4 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.adapters.HabitatsAdapter;
 import com.cm.zooexplorer.models.Habitat;
 import com.cm.zooexplorer.viewmodel.HabitatViewModel;

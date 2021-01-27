@@ -1,11 +1,10 @@
-package com.cm.zooexplorer;
+package com.cm.zooexplorer.ui;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,13 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.cm.zooexplorer.BuildConfig;
+import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.adapters.GalleryAdapter;
-import com.cm.zooexplorer.models.Habitat;
 import com.cm.zooexplorer.viewmodel.HabitatViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -42,8 +41,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-
-import static android.os.Environment.getExternalStoragePublicDirectory;
 
 
 /**

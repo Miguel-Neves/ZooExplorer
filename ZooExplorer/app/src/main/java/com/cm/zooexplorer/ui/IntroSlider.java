@@ -16,7 +16,6 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cm.zooexplorer.MainActivity;
 import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.adapters.IntroViewPagerAdapter;
 import com.cm.zooexplorer.models.ScreenItem;

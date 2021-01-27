@@ -1,10 +1,8 @@
 package com.cm.zooexplorer.repository;
 
 import android.app.Application;
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
