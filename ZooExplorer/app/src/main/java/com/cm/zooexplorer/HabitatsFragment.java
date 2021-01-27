@@ -127,27 +127,32 @@ public class HabitatsFragment extends Fragment {
                 unlockedHabitats = new ArraySet<>(prefs.getStringSet(UNLOCKED_HABITATS, unlockedHabitats));
 
                 // Verify if the data represents a valid habitat ID and proceed accordingly
-                if (unlockedHabitats.contains(habitatId))
-                    Toast.makeText(getContext(), "Habitat already unlocked!", Toast.LENGTH_LONG).show();
                 //else if (habitatList.stream().anyMatch(e -> e.getId().equals(habitatId)))
-                else if (!isValidHabitat(habitatId))
+                if (!isValidHabitat(habitatId))
                     Toast.makeText(getContext(), "Not a valid habitat!", Toast.LENGTH_LONG).show();
                 else {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    unlockedHabitats.add(habitatId);
-                    editor.putStringSet(UNLOCKED_HABITATS, unlockedHabitats);
-                    editor.apply();
-                    adapter.notifyItemChanged(Integer.parseInt(habitatId) - 1);
-                    if (habitatList.size() > unlockedHabitats.size())
-                        Toast.makeText(getContext(), "Habitat " + habitatId + " unlocked!", Toast.LENGTH_LONG).show();
+                    habitatsRecyclerView.scrollToPosition(Integer.parseInt(habitatId) - 1);
+                    if (unlockedHabitats.contains(habitatId))
+                        Toast.makeText(getContext(), "Habitat already unlocked!", Toast.LENGTH_LONG).show();
                     else {
-                        Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                        if (vibrator != null)
-                            vibrator.vibrate(500);
-                        Toast.makeText(getContext(), "All habitats unlocked!\nCONGRATULATIONS!", Toast.LENGTH_LONG).show();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        unlockedHabitats.add(habitatId);
+                        editor.putStringSet(UNLOCKED_HABITATS, unlockedHabitats);
+                        editor.apply();
+                        adapter.notifyItemChanged(Integer.parseInt(habitatId) - 1);
+                        if (habitatList.size() > unlockedHabitats.size())
+                            Toast.makeText(getContext(), "Habitat " + habitatId + " unlocked!", Toast.LENGTH_LONG).show();
+                        else {
+                            Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                            if (vibrator != null)
+                                vibrator.vibrate(500);
+                            Toast.makeText(getContext(), "All habitats unlocked!\nCONGRATULATIONS!", Toast.LENGTH_LONG).show();
+                        }
+                        Intent intent = new Intent(getContext(), HabitatProfileActivity.class);
+                        intent.putExtra(HabitatsAdapter.HABITAT_IDENTIFIER, habitatId);
+                        getContext().startActivity(intent);
                     }
                 }
-                habitatsRecyclerView.scrollToPosition(Integer.parseInt(habitatId) - 1);
             } catch (NullPointerException e) {
                 Toast.makeText(getContext(), "Error reading the QR code!", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Error reading QR code: ", e);

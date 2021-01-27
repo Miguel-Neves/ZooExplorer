@@ -1,11 +1,17 @@
 package com.cm.zooexplorer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                verifyInternetConnection();
+
                 switch (item.getItemId()){
                     case R.id.map_page:
                         openFragment(MapFragment.newInstance());
@@ -44,6 +52,35 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        verifyInternetConnection();
+    }
+
+    private void verifyInternetConnection() {
+        boolean connected;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            connected = cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (NullPointerException e) {
+            connected = false;
+        }
+        if (!connected)
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Internet access required")
+                    .setMessage("Internet access is required to obtain updated habitat information and photos." +
+                            "\nYou will be redirected to your system settings," +
+                            " please check your internet connection.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                        }
+                    })
+                    .show();
     }
 
     public void openFragment(Fragment fragment){
