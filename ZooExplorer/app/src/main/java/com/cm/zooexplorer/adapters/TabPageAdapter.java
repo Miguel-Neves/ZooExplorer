@@ -21,7 +21,7 @@ public class TabPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new InfoFragment();
+            case 0: return new InfoFragment(habitat_id);
             case 1: return new GalleryFragment(habitat_id);
             default: return null;
         }
