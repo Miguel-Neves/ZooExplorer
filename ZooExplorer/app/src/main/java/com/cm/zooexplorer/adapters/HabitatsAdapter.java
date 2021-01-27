@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import java.util.Set;
 
 import com.cm.zooexplorer.HabitatProfileActivity;
 import com.cm.zooexplorer.HabitatsFragment;
-import com.cm.zooexplorer.QrCodeActivity;
 import com.cm.zooexplorer.R;
 import com.cm.zooexplorer.models.Habitat;
 
@@ -50,7 +48,7 @@ public class HabitatsAdapter extends RecyclerView.Adapter<HabitatsAdapter.Habita
     public void onBindViewHolder(@NonNull HabitatViewHolder holder, int position) {
         final Habitat currentHabitat = habitats.get(position);
 
-        String habitatName = "Habitat " + currentHabitat.getId();
+        String habitatName = context.getResources().getString(R.string.habitat_number, currentHabitat.getId());
         holder.habitatName.setText(habitatName);
 
         holder.backgroundImg.setImageResource(getImage(currentHabitat.getImageName()));

@@ -53,7 +53,7 @@ public class ProfileFragment extends Fragment {
                 if (habitats.size() > unlockedHabitats.size())
                     contTxt = unlockedHabitats.size() + " / " + habitats.size();
                 else
-                    contTxt = "COMPLETE!";
+                    contTxt = getString(R.string.completed);
                 ((TextView) rootView.findViewById(R.id.textUnlockedContent)).setText(contTxt);
                 ((ProgressBar) rootView.findViewById(R.id.habitatsProgress)).setMax(habitats.size());
                 ((ProgressBar) rootView.findViewById(R.id.habitatsProgress)).setProgress(unlockedHabitats.size());

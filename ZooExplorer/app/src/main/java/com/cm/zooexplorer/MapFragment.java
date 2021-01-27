@@ -130,7 +130,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         for (Habitat habitat : habitatList) {
             gmap.addMarker(new MarkerOptions()
                     .position(new LatLng(habitat.getLocation().getLatitude(), habitat.getLocation().getLongitude()))
-                    .title("Habitat " + habitat.getId() + "\tⓘ")
+                    .title(getString(R.string.habitat_number, habitat.getId()) + "\tⓘ")
                     .snippet(unlockedHabitats.contains(habitat.getId()) ? habitat.getSpecies() : getString(R.string.locked_text))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.animal_marker_icon))
                     .alpha(unlockedHabitats.contains(habitat.getId()) ? 1f : 0.6f))

@@ -70,10 +70,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (!connected)
             new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Internet access required")
-                    .setMessage("Internet access is required to obtain updated habitat information and photos." +
-                            "\nYou will be redirected to your system settings," +
-                            " please check your internet connection.")
+                    .setTitle(getString(R.string.internetRequiredTitle))
+                    .setMessage(getString(R.string.internetRequiredMessage))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

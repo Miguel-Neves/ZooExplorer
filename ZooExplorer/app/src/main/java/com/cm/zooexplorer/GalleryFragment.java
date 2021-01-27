@@ -107,10 +107,10 @@ public class GalleryFragment extends Fragment {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentPictureUri);
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 } catch (IOException e) {
-                    Toast.makeText(getContext(), "Error: Could not access the gallery directory.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.galleryError), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Could not access the gallery directory. Error: ", e);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(getContext(), "Error: Could not initiate the image capture.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.cameraError), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Could not initiate the image capture. Error: ", e);
                 }
             }
@@ -137,7 +137,7 @@ public class GalleryFragment extends Fragment {
             mediaScanIntent.setData(currentPictureUri);
             getActivity().sendBroadcast(mediaScanIntent);
             Log.i(TAG, "Image saved in the device's gallery.");
-            Toast.makeText(getContext(), "Image saved in the device's gallery.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.imageSaved), Toast.LENGTH_LONG).show();
 
             habitatViewModel.uploadToFirebase(currentPictureUri, habitat_id);
         }

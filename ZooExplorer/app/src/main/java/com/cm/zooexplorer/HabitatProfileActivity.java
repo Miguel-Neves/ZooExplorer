@@ -6,12 +6,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cm.zooexplorer.adapters.HabitatsAdapter;
 import com.cm.zooexplorer.adapters.TabPageAdapter;
@@ -19,8 +16,6 @@ import com.cm.zooexplorer.models.Habitat;
 import com.cm.zooexplorer.viewmodel.HabitatViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 public class HabitatProfileActivity extends AppCompatActivity {
     private HabitatViewModel habitatViewModel;
@@ -43,7 +38,7 @@ public class HabitatProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String habitatId = intent.getStringExtra(HabitatsAdapter.HABITAT_IDENTIFIER);
 
-        collapsingToolbar.setTitle("Habitat " + habitatId);
+        collapsingToolbar.setTitle(getString(R.string.habitat_number, habitatId));
 
         habitatViewModel = new ViewModelProvider(this).get(HabitatViewModel.class);
         habitatViewModel.getHabitat(habitatId).observe(this, new Observer<Habitat>() {

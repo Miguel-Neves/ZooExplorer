@@ -5,14 +5,13 @@
     <string name="skip">SKIP</string>
     <string name="getStarted">GET STARTED</string>
 
-    <string name="habitat">Habitat </string>
+    <string name="habitat_number">Habitat %1$s</string>
     <string name="map">Map</string>
     <string name="habitats">Habitats</string>
     <string name="profile">Profile</string>
 
-    <string name="locked_text">[visit to unlock]</string>
-
     <string name="habUnlocked">Habitats unlocked:</string>
+    <string name="completed">COMPLETED!</string>
 
     <string name="characteristics">Characteristics</string>
     <string name="species">Species</string>
@@ -38,4 +37,24 @@
         <item quantity="one">%1$s year</item>
         <item quantity="other">%1$s years</item>
     </plurals>
+
+    <string name="intro_map">Use the map to see where you are and locate the animal habitats!</string>
+    <string name="intro_habitats">In the habitats tab you can see the habitats of the zoo. Visit one and use the QR code scanner to unlock it!</string>
+    <string name="intro_habitat">Once unlocked, you can see the habitat\'s page to find the information about the animal inside!</string>
+    <string name="intro_gallery">On each habitat\'s page, you can also see its photo gallery and upload your own!</string>
+    <string name="habitat">Habitat</string>
+    <string name="gallery">Gallery</string>
+
+    <string name="locked_text">[visit to unlock]</string>
+    <string name="galleryError">Error: Could not access the gallery directory.</string>
+    <string name="cameraError">Error: Could not initiate the image capture.</string>
+    <string name="qrCaptureError">Error: Could not initiate the QR code capture.</string>
+    <string name="qrCodeError">Error reading the QR code!</string>
+    <string name="imageSaved">Image saved in the device\'s gallery.</string>
+    <string name="invalidHabitat">Not a valid habitat!</string>
+    <string name="habitatAlreadyUnlocked">Habitat already unlocked!</string>
+    <string name="habitatUnlocked">Habitat %1$s unlocked!</string>
+    <string name="allHabitatsUnlocked">All habitats unlocked!\nCONGRATULATIONS!</string>
+    <string name="internetRequiredTitle">Internet access required</string>
+    <string name="internetRequiredMessage">Internet access is required to obtain updated habitat information and photos.\nYou will be redirected to your system settings, please check your internet connection.</string>
 </resources>

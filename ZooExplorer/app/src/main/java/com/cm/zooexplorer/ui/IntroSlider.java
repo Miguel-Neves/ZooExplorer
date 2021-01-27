@@ -47,10 +47,10 @@ public class IntroSlider extends AppCompatActivity {
         btnGetStarted = findViewById(R.id.butGetStarted);
 
         // add slides to the list
-        introSlides.add(new ScreenItem("MAP", "Use the map to see where you are and locate the animal habitats!", R.drawable.intro_map));
-        introSlides.add(new ScreenItem("HABITATS", "In the habitats tab you can see the habitats of the zoo. Visit one and use the QR code scanner to unlock it!", R.drawable.intro_list));
-        introSlides.add(new ScreenItem("HABITAT", "Once unlocked, you can see the habitat's page to find the information about the animal inside!", R.drawable.intro_info));
-        introSlides.add(new ScreenItem("GALLERY", "On each habitat's page, you can also see its photo gallery and upload your own!", R.drawable.intro_photos));
+        introSlides.add(new ScreenItem(getString(R.string.map), getString(R.string.intro_map), R.drawable.intro_map));
+        introSlides.add(new ScreenItem(getString(R.string.habitats), getString(R.string.intro_habitats), R.drawable.intro_list));
+        introSlides.add(new ScreenItem(getString(R.string.habitat), getString(R.string.intro_habitat), R.drawable.intro_info));
+        introSlides.add(new ScreenItem(getString(R.string.gallery), getString(R.string.intro_gallery), R.drawable.intro_photos));
         introSlides.add(new ScreenItem("", "", R.drawable.logo));
 
         viewPager = findViewById(R.id.viewPager);

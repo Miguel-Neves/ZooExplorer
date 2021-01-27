@@ -6,14 +6,13 @@
     <string name="skip">SALTAR</string>
     <string name="getStarted">COMEÇAR</string>
 
-    <string name="habitat">Habitat </string>
+    <string name="habitat_number">Habitat %1$s</string>
     <string name="map">Mapa</string>
     <string name="habitats">Habitats</string>
     <string name="profile">Perfil</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="locked_text">[visite para desbloquear]</string>
+    <string name="habUnlocked">Habitats desbloqueados:</string>
+    <string name="completed">COMPLETO!</string>
 
     <string name="characteristics">Características</string>
     <string name="species">Espécie</string>
@@ -39,4 +38,24 @@
         <item quantity="one">%1$s ano</item>
         <item quantity="other">%1$s anos</item>
     </plurals>
+
+    <string name="intro_map">Use o mapa para ver onde se encontra e localizar os habitats dos animais!</string>
+    <string name="intro_habitats">Na aba dos habitats é possível ver os habitats do zoo. Visite um deles e use a captura de código QR para o desbloquear!</string>
+    <string name="intro_habitat">Quando desbloqueado, é possível ver a página de um habitat e encontrar a informação sobre o animal que contém!</string>
+    <string name="intro_gallery">Na página de cada habitat, é também possível ver a galeria de fotos e adicionar uma nova!</string>
+    <string name="habitat">Habitat</string>
+    <string name="gallery">Galeria</string>
+
+    <string name="locked_text">[visite para desbloquear]</string>
+    <string name="galleryError">Erro: Não foi possível aceder ao directório da galeria.</string>
+    <string name="cameraError">Erro: Não foi possível iniciar a captura de imagem.</string>
+    <string name="qrCaptureError">Erro: Não foi possível iniciar a captura de código QR.</string>
+    <string name="qrCodeError">Erro na leitura do código QR!</string>
+    <string name="imageSaved">Imagem guardada na galeria do dispositivo.</string>
+    <string name="invalidHabitat">Habitat inválido!</string>
+    <string name="habitatAlreadyUnlocked">Habitat já desbloqueado!</string>
+    <string name="habitatUnlocked">Habitat %1$s desbloqueado!</string>
+    <string name="allHabitatsUnlocked">Todos os habitats desbloqueados!\PARABÉNS!</string>
+    <string name="internetRequiredTitle">Acesso à internet necessário</string>
+    <string name="internetRequiredMessage">O acesso à internet é necessário para obter informações e fotos dos habitats.\nSerá redireccionado para as definições do sistema, por favor verifique a sua conexão à internet.</string>
 </resources>
